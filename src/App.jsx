@@ -1,121 +1,73 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import Navbar from "./componets/Navbar";
+import CartSection from "./componets/CartSection";
+import Products from "./componets/Products";
+import Banner from "./componets/Banner";
+import GetStart from "./componets/GetStart";
+import Transparent from "./componets/Transparent";
+import WorkFlow from "./componets/WorkFlow";
+import Footer from "./componets/Footer";
+
+const jsondata = async () => {
+  const res = await fetch("/data.json");
+  return res.json();
+};
+const datas = jsondata();
+console.log(datas);
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  // for products usestate
+  const [productCart, setProductCart] = useState("Products");
+  // for carts usustate:
+  const [carts, setCarts] = useState([]);
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      <Navbar carts={carts}></Navbar>
+      <Banner></Banner>
+      <div className="text-center justify-center mt-8">
+        <h2 className="text-4xl font-bold">Premium Digital Tools</h2>
+        <p className="text-[#627382]">
+          Choose from our curated collection of premium digital products
+          designed <br /> to boost your productivity and creativity.
+        </p>
+      </div>
+      {/* banner section;;; */}
 
-      <div className="ticks"></div>
+      <div>
+        <div className="tabs tabs-box w-43 my-8 rounded-full mx-auto justify-center items-center bg-transparent ">
+          <input
+            type="radio"
+            name="my_tabs_6"
+            onClick={() => setProductCart("Products")}
+            className={`tab rounded-full ${productCart === "Products" ? "bg-gradient-to-r from-[#4F39F6]  to-[#9514FA]" : ""}`}
+            aria-label="Products"
+            defaultChecked
+          />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <input
+            type="radio"
+            name="my_tabs_6"
+            onClick={() => setProductCart("Carts")}
+            className={`tab rounded-full ${productCart === "Carts" ? "bg-gradient-to-r from-[#4F39F6]  to-[#9514FA]" : ""}`}
+            aria-label={`Carts (${carts.length})`}
+          />
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      {productCart === "Products" ? (
+        <Products datas={datas} carts={carts} setCarts={setCarts}></Products>
+      ) : null}
+      {productCart === "Carts" ? (
+        <CartSection carts={carts} setCarts={setCarts}></CartSection>
+      ) : null}
+
+      <GetStart></GetStart>
+      <Transparent></Transparent>
+      <WorkFlow></WorkFlow>
+      <Footer></Footer>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
